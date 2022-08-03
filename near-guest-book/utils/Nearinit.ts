@@ -1,6 +1,12 @@
 import React from "react";
 import getConfig from "./context";
-import { connect, Contract, keyStores, WalletConnection } from "near-api-js";
+import {
+  connect,
+  Contract,
+  keyStores,
+  WalletConnection,
+  utils,
+} from "near-api-js";
 
 declare global {
   interface Window {
@@ -56,9 +62,10 @@ export function login() {
   window.walletConnection.requestSignIn(nearConfig.contractName);
 }
 
-export async function set_msgs(message: String) {
+export async function set_msgs(message: String, amt: number | null) {
   let response = await window.contract.setMSG({
     args: { msg: message },
+    amount: utils.format.parseNearAmount(amt?.toString()),
   });
   return response;
 }
